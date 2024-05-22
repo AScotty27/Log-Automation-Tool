@@ -1,4 +1,4 @@
-# Speed7 
+# Log Automation Tool
 
 ## Tools
 - Django

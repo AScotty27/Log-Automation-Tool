@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rapid7 Variables</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/variables.css' %}">
+</head>
+<body>
+    <h1>Rapid7 Variables</h1>
+    {% for variable in variables.variables %}
+        <div class="variable-section">
+            <h2>{{ variable.name }}</h2>
+            <p><strong>Description:</strong> {{ variable.description }}</p>
+            <p><strong>Value:</strong> {{ variable.value }}</p>
+            <p><strong>Created:</strong> {{ variable.created }}</p>
+            <p><strong>Updated:</strong> {{ variable.updated }}</p>
+            <p><strong>ID:</strong> {{ variable.id }}</p>
+        </div>
+    {% endfor %}
+</body>
+</html>
+ 

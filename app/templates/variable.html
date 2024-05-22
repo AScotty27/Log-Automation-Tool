@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Find Variable</title>
+</head>
+<body>
+    <h1>Find Variable by ID</h1>
+    <form method="POST" action="{% url 'find_variable' %}">
+        {% csrf_token %}
+        <label for="variable_id">Variable ID:</label><br>
+        <input type="text" id="variable_id" name="variable_id" required><br><br>
+        
+        <input type="submit" value="Find">
+    </form>
+
+    {% if variable_details %}
+    <h2>Variable Details</h2>
+    <ul>
+        <li>ID: {{ variable_details.variable.id }}</li>
+        <li>Name: {{ variable_details.variable.name }}</li>
+        <li>Description: {{ variable_details.variable.description }}</li>
+        <li>Value: {{ variable_details.variable.value }}</li>
+        <li>User ID: {{ variable_details.variable.userId }}</li>
+        <li>Created: {{ variable_details.variable.created }}</li>
+        <li>Updated: {{ variable_details.variable.updated }}</li>
+        <li>Reserved: {{ variable_details.variable.reserved }}</li>
+    </ul>
+    {% endif %}
+</body>
+</html>

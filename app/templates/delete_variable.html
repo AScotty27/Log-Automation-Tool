@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Variable</title>
+</head>
+<body>
+    <h1>Delete Variable</h1>
+    <form method="POST" action="{% url 'delete_variable' %}">
+        {% csrf_token %}
+        <label for="variable_id">Variable ID:</label><br>
+        <input type="text" id="variable_id" name="variable_id" required><br><br>
+        
+        <input type="submit" value="Delete">
+    </form>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Variable</title>
+</head>
+<body>
+    <h1>Update Variable</h1>
+    <form method="POST" action="{% url 'update_variable' %}">
+        {% csrf_token %}
+        <label for="variable_id">Variable ID:</label><br>
+        <input type="text" id="variable_id" name="variable_id" required><br><br>
+
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description" required><br><br>
+
+        <label for="value">Value:</label><br>
+        <input type="text" id="value" name="value" required><br><br>
+        
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>

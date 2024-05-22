@@ -1,4 +1,5 @@
-# Speed7 
+# Log Automation Tool
+Adds additional features to current logging tools such as Rapid7, DataDog, GreyLog, SQL
 
 ## Tools
 - Django
@@ -81,16 +82,16 @@ Simple Get request no key
     - `pip install requests`
  
 ## VS CODE HTML SHORTCUTS
-.class
-#id
-.class#id
-!
-link
-a
-div
-ul
-li
-button[type=button]
+- .class
+- #id
+- .class#id
+- !
+- link
+- a
+- div
+- ul
+- li
+- button[type=button]
  
 ## Setup with ENV For Windows
 - Install python3 (from website)

@@ -15,8 +15,13 @@
             <p><strong>Created:</strong> {{ variable.created }}</p>
             <p><strong>Updated:</strong> {{ variable.updated }}</p>
             <p><strong>ID:</strong> {{ variable.id }}</p>
+            <!-- Delete form -->
+            <form action="{% url 'delete_variable' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="variable_id" value="{{ variable.id }}">
+                <button type="submit">Delete</button>
+            </form>
         </div>
     {% endfor %}
 </body>
 </html>
- 

@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from decouple import config, Csv
 from django.http import HttpResponse, JsonResponse
 import requests
+from django import forms
+import pandas as pd
+from .models import Variable
+from django.http import HttpResponseNotAllowed
 
 # Create your views here.
 def index(request):
@@ -139,7 +143,7 @@ def find_variable(request):
                 "response_code": response.status_code
             })
     
-    return render(request, 'variable.html', {'variable_details': variable_details})
+    return render(request, 'find_variable.html', {'variable_details': variable_details})
 def update_variable(request):
     if request.method == "POST":
         variable_id = request.POST.get('variable_id')
@@ -182,3 +186,87 @@ def update_variable(request):
             return JsonResponse({"status": "error", "message": str(e)})
     
     return render(request, 'update_variable.html')
+
+class VariableUploadForm(forms.Form):
+    name = forms.CharField(max_length=100, required=True)
+    description = forms.CharField(max_length=255, required=False)
+    excel_file = forms.FileField()
+
+def upload_variables(request):
+    if request.method == "POST":
+        form = VariableUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            description = form.cleaned_data['description']
+            excel_file = request.FILES['excel_file']
+
+            try:
+                df = pd.read_excel(excel_file)
+                # Flatten all values and filter out any NaN values, then join them with commas
+                values = df.values.flatten()
+                values = [str(v) for v in values if pd.notna(v)]
+                concatenated_values = ", ".join(values)
+            except Exception as e:
+                return JsonResponse({"status": "error", "message": "Failed to read Excel file: " + str(e)})
+
+            API_KEY = config('RAPID7_KEY')
+            api_url = "https://us.rest.logs.insight.rapid7.com/query/variables"
+            headers = {
+                "Content-Type": "application/json",
+                "X-Api-Key": API_KEY
+            }
+            
+            data = {
+                "variable": {
+                    "name": name,
+                    "description": description,
+                    "value": concatenated_values
+                }
+            }
+
+            response = requests.post(api_url, headers=headers, json=data)
+            if response.status_code == 201:
+                response_data = response.json()
+                Variable.objects.create(
+                    name=name,
+                    description=description,
+                    value=concatenated_values
+                )
+                return JsonResponse({"status": "success", "message": "Variable created successfully!", "data": response_data})
+            else:
+                response_data = response.json()
+                return JsonResponse({
+                    "status": "error", 
+                    "message": response_data.get("message", "Failed to create variable!"),
+                    "response_code": response.status_code,
+                    "details": response_data
+                })
+        else:
+            return render(request, 'upload_variables.html', {'form': form})
+    else:
+        form = VariableUploadForm()
+        return render(request, 'upload_variables.html', {'form': form})
+
+def delete_variable_direct(request, variable_id):
+    # Check if the request method is POST
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])  # Return HTTP 405 Method Not Allowed if not POST
+
+    # Proceed with your deletion logic
+    API_KEY = config('RAPID7_KEY')
+    api_url = f"https://us.rest.logs.insight.rapid7.com/query/variables/{variable_id}"
+    headers = {
+        'x-api-key': API_KEY,
+        'Content-Type': 'application/json',
+    }
+    response = requests.delete(api_url, headers=headers)
+    if response.status_code == 204:
+        return JsonResponse({"status": "success", "message": "Variable deleted successfully"})
+    else:
+        response_data = response.json()
+        return JsonResponse({
+            "status": "error", 
+            "message": response_data.get("message", "Failed to delete variable"),
+            "response_code": response.status_code,
+            "details": response_data
+        })

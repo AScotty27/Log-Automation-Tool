@@ -1,4 +1,5 @@
 # Log Automation Tool
+
 Adds additional features to current logging tools such as Rapid7, DataDog, GreyLog, SQL
 
 ## Tools

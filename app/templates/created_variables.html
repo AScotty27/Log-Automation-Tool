@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Created Variables</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Created Variables</h1>
+    {% for variable in variable_details %}
+        <div>
+            {% if variable.error %}
+                <p>{{ variable.error }}</p>
+            {% elif is_upload %}
+                <p><strong>Name:</strong> {{ variable.name }}</p>
+                <p><strong>Description:</strong> {{ variable.description }}</p>
+                <p><strong>Value:</strong> {{ variable.value }}</p>
+                <p><strong>API Response:</strong> {{ variable.api_response | safe }}</p>
+            {% else %}
+                <p><strong>ID:</strong> {{ variable.id }}</p>
+                <p><strong>Name:</strong> {{ variable.name }}</p>
+                <p><strong>Description:</strong> {{ variable.description }}</p>
+                <p><strong>Value:</strong> {{ variable.value }}</p>
+                <p><strong>Created:</strong> {{ variable.created }}</p>
+                <p><strong>Updated:</strong> {{ variable.updated }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <a href="{% url 'variables' %}">Back to Variables List</a>
+</body>
+</html>

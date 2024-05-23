@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logs of the First Log Set</title>
+</head>
+<body>
+    <h1>Logs of the First Log Set</h1>
+    {% if logsets.error %}
+        <p>{{ logsets.error }}</p>
+    {% else %}
+        {% if logsets.logsets %}
+            <h2>Log Set Name: {{ logsets.logsets.0.name }}</h2>
+            <p><strong>ID:</strong> {{ logsets.logsets.0.id }}</p>
+            <p><strong>Description:</strong> {{ logsets.logsets.0.description }}</p>
+            <p><strong>RRN:</strong> {{ logsets.logsets.0.rrn }}</p>
+            <p><strong>User Data:</strong></p>
+            <ul>
+                {% for key, value in logsets.logsets.0.user_data.items %}
+                    <li><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+            <p><strong>Logs Info:</strong></p>
+            <ul>
+                {% for log in logsets.logsets.0.logs_info %}
+                    <li>
+                        <p><strong>Log Name:</strong> {{ log.name }}</p>
+                        <p><strong>Log ID:</strong> {{ log.id }}</p>
+                        <p><strong>RRN:</strong> {{ log.rrn }}</p>
+                        <p><strong>Link:</strong> <a href="{{ log.links.href }}">{{ log.links.href }}</a></p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No log sets available.</p>
+        {% endif %}
+    {% endif %}
+</body>
+</html>

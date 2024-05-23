@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Logs of the First Log Set</title>
+    <title>Logs of All Log Sets</title>
 </head>
 <body>
-    <h1>Logs of the First Log Set</h1>
+    <h1>Logs of All Log Sets</h1>
     {% if logsets.error %}
         <p>{{ logsets.error }}</p>
     {% else %}
         {% if logsets.logsets %}
-            <h2>Log Set Name: {{ logsets.logsets.0.name }}</h2>
-            <p><strong>ID:</strong> {{ logsets.logsets.0.id }}</p>
-            <p><strong>Description:</strong> {{ logsets.logsets.0.description }}</p>
-            <p><strong>RRN:</strong> {{ logsets.logsets.0.rrn }}</p>
-            <p><strong>User Data:</strong></p>
-            <ul>
-                {% for key, value in logsets.logsets.0.user_data.items %}
-                    <li><strong>{{ key }}:</strong> {{ value }}</li>
-                {% endfor %}
-            </ul>
-            <p><strong>Logs Info:</strong></p>
-            <ul>
-                {% for log in logsets.logsets.0.logs_info %}
-                    <li>
-                        <p><strong>Log Name:</strong> {{ log.name }}</p>
-                        <p><strong>Log ID:</strong> {{ log.id }}</p>
-                        <p><strong>RRN:</strong> {{ log.rrn }}</p>
-                        <p><strong>Link:</strong> <a href="{{ log.links.href }}">{{ log.links.href }}</a></p>
-                    </li>
-                {% endfor %}
-            </ul>
+            {% for logset in logsets.logsets %}
+                <div class="logset">
+                    <p><strong>Log Set Name:</strong> {{ logset.name }}</p>
+                    <p><strong>ID:</strong> {{ logset.id }}</p>
+                    <ul>
+                        {% for key, value in logset.user_data.items %}
+                            <li><strong>{{ key }}:</strong> {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p><strong>Logs Info:</strong></p>
+                    <ul>
+                        {% for log in logset.logs_info %}
+                            <li>
+                                <p><strong>Log Name:</strong> {{ log.name }}</p>
+                                <p><strong>Log ID:</strong> {{ log.id }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
         {% else %}
             <p>No log sets available.</p>
         {% endif %}

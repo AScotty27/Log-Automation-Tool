@@ -6,10 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <p>This page is the: {{ name }}</p>
-    <p>Links to the forms are here:</p>
-
-    <br><br>
-    <p>The secret potato is: {{ secret_potato }}</p>
+    <h1>{{name}}</h1>
+    <p>Query Links</p>
+    <ul>
+        <li><a href="{% url 'list_all_logsets' %}">All Log Sets</a></li>
+    </ul>
 </body>
 </html>

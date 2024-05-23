@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Query Home</title>
 </head>
 <body>
-    <h1>{{name}}</h1>
-    <p>Query Links</p>
-    <ul>
-        <li><a href="{% url 'list_all_logsets' %}">All Log Sets</a></li>
-    </ul>
+    <h1>Welcome to the Query Home</h1>
+    <a href="{% url 'list_all_logsets' %}">View All Log Sets</a>
+    <br><br>
+    <a href="{% url 'search_logs' %}">Search Logs</a>
+    
 </body>
 </html>

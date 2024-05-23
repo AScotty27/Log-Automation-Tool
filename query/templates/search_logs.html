@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Logs</title>
+</head>
+<body>
+    <h1>Search Logs</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="log_set">Log Set:</label>
+        <input type="text" id="log_set" name="log_set" value="Auth0-officeally-production" required>
+        <br>
+        <label for="time_range">Time Range:</label>
+        <input type="text" id="time_range" name="time_range" value="last 1 day" required>
+        <br>
+        <label for="leql">LEQL Query:</label>
+        <input type="text" id="leql" name="leql" value="calculate(count)" required>
+        <br>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if logs_result %}
+        <h2>Search Results:</h2>
+        <pre>{{ logs_result|safe }}</pre>
+    {% elif error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>

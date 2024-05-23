@@ -1,9 +1,12 @@
 from django.shortcuts import render
-from urllib3 import PoolManager
+from .search_logs import get_logs, run_query  # Import the functions from the search_logs file
+from requests import Session
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from decouple import config
 import json
 
-API_KEY = config('RAPID7_KEY')
+
 REGION = 'us'  # Swap for your region
 BASE_URL = f"https://{REGION}.api.insight.rapid7.com/log_search"
 
@@ -39,47 +42,19 @@ def query_home(request):
     information = {"name": "Query Home Page"}
     return render(request, "query_home.html", information)
 
-def http_request(method, url, headers=None, body=None):
-    """Utility function to make HTTP requests."""
-    http = PoolManager()
-    response = http.request(method, url, headers=headers, body=body)
-    return response
-
-def get_logs(log_set):
-    """Fetches log IDs based on predefined log names."""
-    url = f"{BASE_URL}/management/logs/"
-    headers = {"x-api-key": API_KEY}
-    response = http_request("GET", url, headers=headers)
-   
-    if response.status == 200:
-        json_object = json.loads(response.data)
-        for log in json_object['logs']:
-            if log['name'] == log_set:
-                return log['id']
-    return None
-
-def run_query(url):
-    """Executes a LEQL query and handles pagination if necessary."""
-    headers = {"x-api-key": API_KEY}
-    response = http_request("GET", url, headers=headers)
-   
-    if response.status == 202:
-        json_object = json.loads(response.data)
-        continue_url = json_object['links'][0]['href']
-        return run_query(continue_url)
-    elif response.status == 200:
-        return json.loads(response.data)
-    else:
-        return {"error": f"Error: {response.status}, {response.data}"}
-
 def search_logs(request):
+
     logs_result = None
     error = None
 
+    log_set = 'Auth0-officeally-production'
+    time_range = 'last 1 day'
+    leql = 'calculate(count)'
+
     if request.method == 'POST':
-        log_set = request.POST.get('log_set', 'Auth0-officeally-production')
-        time_range = request.POST.get('time_range', 'last 1 day')
-        leql = request.POST.get('leql', 'calculate(count)')
+        log_set = request.POST.get('log_set', log_set)
+        time_range = request.POST.get('time_range', time_range)
+        leql = request.POST.get('leql', leql)
 
         log_id = get_logs(log_set)
         if log_id:
@@ -88,4 +63,10 @@ def search_logs(request):
         else:
             error = "Log ID not found"
 
-    return render(request, 'search_logs.html', {'logs_result': logs_result, 'error': error})
+    return render(request, 'search_logs.html', {
+        'logs_result': logs_result,
+        'error': error,
+        'log_set': log_set,
+        'time_range': time_range,
+        'leql': leql
+    })

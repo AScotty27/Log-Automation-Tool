@@ -1,28 +1,13 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Variables</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/menu.css' %}">
-</head>
-<body>
-    <button class="hamburger" onclick="toggleMenu()">&#9776;</button> <!-- Hamburger menu button -->
-    <div class="menu" id="menu">
-        <a href="/app/">Go to Variables</a>
-        <a href="/query/">Go to Query</a>
-    </div>
-    <script src="{% static 'js/menu.js' %}"></script>
-    <h1>Upload Excel File to Create Variables</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="text" name="name" placeholder="Enter variable name">
-        <input type="text" name="description" placeholder="Enter variable description">
-        <input type="file" name="excel_file" required>
-        <button type="submit">Upload and Create Variables</button>
-    </form>
-    <a href="/app/variables">Back to Variables List</a>
-</body>
-</html>
+{% extends "main_menu.html" %}
+
+{% block content %}
+<h1>Upload Excel File to Create Variables</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Enter variable name">
+    <input type="text" name="description" placeholder="Enter variable description">
+    <input type="file" name="excel_file" required>
+    <button type="submit">Upload and Create Variables</button>
+</form>
+<a href="/app/variables">Back to Variables List</a>
+{% endblock %}

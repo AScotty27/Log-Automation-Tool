@@ -1,41 +1,23 @@
-/* General Body Styles */
-body {
-    background-color: #1e1e1e; /* Very dark grey, almost black */
-    color: #d9d9d9; /* Light grey text for readability */
-    font-family: Arial, sans-serif; /* Modern, clean font */
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh; /* Full viewport height */
-    box-sizing: border-box;
+/* Main menu styling from your existing setup with enhancements */
+.main-menu {
+    text-align: center; /* Keeps the menu centered */
+    padding: 20px; /* Ensures there's padding around the menu items */
+    background-color: #f9f9f9; /* Light grey background for the menu */
+    border-bottom: 2px solid #ddd; /* Adds a subtle border at the bottom */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Adds a slight shadow for depth */
 }
 
-/* Heading Styles */
-h1 {
-    color: #ff7f50; /* Orange color for headings */
-}
-
-/* Paragraph Styles */
-p {
-    color: #ccc; /* Lighter grey for paragraph text */
-}
-
-/* Link Styles */
-a {
-    color: #fff; /* White color for better visibility */
+.main-menu a {
+    color: #0275d8; /* Blue color for the text links */
+    padding: 10px 20px; /* Increases padding for better spacing */
     text-decoration: none; /* Removes underline from links */
-    padding: 8px 15px;
-    background-color: #ff7f50; /* Orange background for links */
-    border-radius: 4px; /* Rounded corners for links */
-    margin-right: 10px;
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+    font-size: 18px; /* Increases font size for better readability */
+    margin: 0 10px; /* Adds horizontal spacing between menu items */
+    display: inline-block; /* Ensures links are aligned in a row */
+    transition: color 0.3s, background-color 0.3s; /* Smooth transition for hover effects */
 }
 
-/* Link Hover Effects */
-a:hover {
-    background-color: #e76f51; /* A darker shade of orange for hover effect */
-    color: #fff; /* White text on hover for better visibility */
+.main-menu a:hover, .main-menu a:focus {
+    color: #fff; /* Changes text color to white on hover/focus */
+    background-color: #01447e; /* Changes background to a darker blue on hover/focus */
 }

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Main Menu</title>
+    <title>{% block title %}Main Menu{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
         .main-menu {
@@ -30,5 +30,6 @@
         <a href="/app/">Go to Variables</a>
         <a href="/query/">Go to Query</a>
     </div>
+    <div>{% block content %}{% endblock %}</div>
 </body>
 </html>

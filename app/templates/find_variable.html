@@ -1,11 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}">
+    <br>
     <title>Find Variable</title>
 </head>
 <body>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button> <!-- Hamburger menu button -->
+    <div class="menu" id="menu">
+        <a href="/app/">Go to Variables</a>
+        <a href="/query/">Go to Query</a>
+    </div>
+    <script src="{% static 'js/menu.js' %}"></script>
     <h1>Find Variable by ID</h1>
-    <form method="POST" action="{% url 'find_variable' %}">
+    <form method="POST" action="/app/find_variable/">
         {% csrf_token %}
         <label for="variable_id">Variable ID:</label><br>
         <input type="text" id="variable_id" name="variable_id" required><br><br>

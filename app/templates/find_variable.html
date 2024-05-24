@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Find Variable by ID</h1>
-    <form method="POST" action="{% url 'find_variable' %}">
+    <form method="POST" action="/app/find_variable/">
         {% csrf_token %}
         <label for="variable_id">Variable ID:</label><br>
         <input type="text" id="variable_id" name="variable_id" required><br><br>

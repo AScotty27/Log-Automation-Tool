@@ -26,10 +26,6 @@ def list_all_logsets(request):
     if response.status_code == 200:
         logsets_data = response.json()  # Convert the response to a Python dictionary
         if "logsets" in logsets_data and len(logsets_data["logsets"]) > 0:
-            first_log = logsets_data["logsets"][0]
-            print("================================================================")
-            print(json.dumps(first_log, indent=4))  # Print the first log set with pretty formatting
-            print("================================================================")
             logsets = {"logsets": logsets_data["logsets"]}
         else:
             logsets = {"error": "No log sets found."}

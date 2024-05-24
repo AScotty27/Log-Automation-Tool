@@ -6,8 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Variables</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}">
 </head>
 <body>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button> <!-- Hamburger menu button -->
+    <div class="menu" id="menu">
+        <a href="/app/">Go to Variables</a>
+        <a href="/query/">Go to Query</a>
+    </div>
+    <script src="{% static 'js/menu.js' %}"></script>
     <h1>Upload Excel File to Create Variables</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}

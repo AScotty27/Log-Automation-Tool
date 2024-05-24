@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', app_views.main_menu, name='main_menu'),  # Main menu at root
     path('app/', include('app.urls')),  # Changed from path('', include('app.urls'))
-    path('query/', include('query.urls'))
+    path('query/', include('query.urls')),
+    path('query_app/', include('query_app.urls')),
 ]

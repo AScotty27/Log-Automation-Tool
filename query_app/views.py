@@ -33,6 +33,6 @@ def list_all_logsets(request):
 
     return render(request, 'list_all_logsets.html', {'logsets': logsets})
 
-def query_home(request):
-    information = {"name": "Search_app Home Page"}
-    return render(request, "search_app.html", information)
+def query_app(request):
+    information = {"name": "Query Home Page"}
+    return render(request, "query_app.html", information)

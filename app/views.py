@@ -7,7 +7,7 @@ import pandas as pd
 from .models import Variable
 from django.http import HttpResponseNotAllowed
 
-# Create your views here.
+# Create your views here
 def index(request):
     information = {"name":"index"}
     return render(request, "index.html", information)

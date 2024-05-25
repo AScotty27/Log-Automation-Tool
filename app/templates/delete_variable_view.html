@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Delete Variable</h1>
-<form method="POST" action="/app/delete_variable/">
+<form method="POST" action="/app/delete_variable_view/">
     {% csrf_token %}
     <label for="variable_id">Variable ID:</label><br>
     <input type="text" id="variable_id" name="variable_id" required><br><br>

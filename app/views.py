@@ -63,15 +63,6 @@ def new_variable(request):
     
     return render(request, 'new_variable.html')
 
-# REFACTOR THIS FUNCTION 
-def delete_variable(request):
-    if request.method == "POST":
-        variable_id = request.POST.get('variable_id')
-
-        if not variable_id:
-            return JsonResponse({"status": "error", "message": "Variable ID is required!"})
-        RAPID7_SERVICE.delete_variable_by_id(variable_id)    
-    return render(request, 'delete_variable.html')
 
 def find_variable(request):
     variable_details = None
@@ -112,6 +103,7 @@ def find_variable(request):
             })
     
     return render(request, 'find_variable.html', {'variable_details': variable_details})
+
 def update_variable(request):
     if request.method == "POST":
         variable_id = request.POST.get('variable_id')
@@ -239,3 +231,14 @@ def delete_variable_direct(request, variable_id):
             "response_code": response.status_code,
             "details": response_data
         })
+
+# updated 
+def delete_variable_view(request):
+    if request.method == "POST":
+        variable_id = request.POST.get('variable_id')
+
+        if not variable_id:
+            return JsonResponse({"status": "error", "message": "Variable ID is required!"})
+        # service method invoked
+        RAPID7_SERVICE.delete_variable_by_id(variable_id)    
+    return render(request, 'delete_variable_view.html')

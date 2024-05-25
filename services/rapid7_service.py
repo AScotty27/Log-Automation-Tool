@@ -5,11 +5,46 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from decouple import config
 from urllib3 import PoolManager
+from django.http import HttpResponse, JsonResponse
+import requests
 
 class Rapid7Service:
     
     BASE_URL = "https://us.api.insight.rapid7.com"  # Base URL for the Rapid7 API
-    
+    API_KEY = config('RAPID7_KEY')
+
+    def delete_variable_by_id(self,variable_id):
+        # Delete variable by id
+
+        api_url = f"https://us.rest.logs.insight.rapid7.com/query/variables/{variable_id}"
+        headers = {
+            'x-api-key': self.API_KEY,
+            'Content-Type': 'application/json',
+        }
+        response = requests.delete(api_url, headers=headers)
+        if response.status_code == 204:
+            return JsonResponse({"status": "success", "message": "Variable deleted successfully"})
+        else:
+            response_data = response.json()
+            return JsonResponse({
+                "status": "error", 
+                "message": response_data.get("message", "Failed to delete variable"),
+                "response_code": response.status_code,
+                "details": response_data
+            })
+
+    def view_all_variables(self):
+
+        base_url = "https://us.rest.logs.insight.rapid7.com/query/variables"
+        headers = {
+            'x-api-key': self.API_KEY,
+            'Content-Type': 'application/json',
+        }
+        response = requests.get(base_url, headers=headers)
+        variables = response.json() 
+        return variables       
+
+
     def __init__(self):
         self.api_key = config('RAPID7_KEY')
         self.data_storage_region = 'US'  # Data storage region

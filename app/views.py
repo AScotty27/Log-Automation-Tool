@@ -6,6 +6,9 @@ from django import forms
 import pandas as pd
 from .models import Variable
 from django.http import HttpResponseNotAllowed
+from services.rapid7_service import Rapid7Service
+
+RAPID7_SERVICE = Rapid7Service()
 
 def main_menu(request):
     return render(request, 'main_menu.html')
@@ -14,15 +17,9 @@ def index(request):
     information = {"name":"index"}
     return render(request, "index.html", information)
 
+
 def variables_view(request):
-    API_KEY = config('RAPID7_KEY')
-    base_url = "https://us.rest.logs.insight.rapid7.com/query/variables"
-    headers = {
-        'x-api-key': API_KEY,
-        'Content-Type': 'application/json',
-    }
-    response = requests.get(base_url, headers=headers)
-    variables = response.json()
+    variables = RAPID7_SERVICE.view_all_variables()
     return render(request, 'variables.html', {'variables': variables})
 
 def new_variable(request):
@@ -66,45 +63,14 @@ def new_variable(request):
     
     return render(request, 'new_variable.html')
 
+# REFACTOR THIS FUNCTION 
 def delete_variable(request):
     if request.method == "POST":
         variable_id = request.POST.get('variable_id')
 
         if not variable_id:
             return JsonResponse({"status": "error", "message": "Variable ID is required!"})
-
-        API_KEY = config('RAPID7_KEY')
-        
-        api_url = f"https://us.rest.logs.insight.rapid7.com/query/variables/{variable_id}"
-        headers = {
-            "Content-Type": "application/json",
-            "X-Api-Key": API_KEY
-        }
-
-        try:
-            response = requests.delete(api_url, headers=headers)
-            if response.status_code == 204:
-                return JsonResponse({"status": "success", "message": "Variable deleted successfully!"})
-            else:
-                response_data = response.json()  # Extract JSON response content
-                return JsonResponse({
-                    "status": "error", 
-                    "message": response_data.get("message", "Failed to delete variable!"),
-                    "response_code": response.status_code,
-                    "details": response_data
-                })
-        except requests.RequestException as e:
-            return JsonResponse({"status": "error", "message": str(e)})
-        except ValueError:  # Handle cases where response has no content
-            if response.status_code == 204:
-                return JsonResponse({"status": "success", "message": "Variable deleted successfully!"})
-            else:
-                return JsonResponse({
-                    "status": "error", 
-                    "message": "Failed to delete variable!",
-                    "response_code": response.status_code
-                })
-    
+        RAPID7_SERVICE.delete_variable_by_id(variable_id)    
     return render(request, 'delete_variable.html')
 
 def find_variable(request):
@@ -249,6 +215,7 @@ def upload_variables(request):
         form = VariableUploadForm()
         return render(request, 'upload_variables.html', {'form': form})
 
+# REFACTOR THIS FUNCTION 
 def delete_variable_direct(request, variable_id):
     # Check if the request method is POST
     if request.method != 'POST':

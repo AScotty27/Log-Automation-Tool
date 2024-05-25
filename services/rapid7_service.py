@@ -71,8 +71,7 @@ class Rapid7Service:
     def get_log_set_by_name(self, log_set_name):
         # Get log set ID by name
         logsets = self.list_all_logsets()
-        print("=========get_log_set_by_name()============")
-        print(logsets)
+        # this gets just the sub log_sets only 
         if "error" in logsets:
             return {"error": logsets["error"]}
         

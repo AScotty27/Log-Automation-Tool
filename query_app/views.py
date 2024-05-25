@@ -10,8 +10,6 @@ def query_app(request):
 
 def list_all_logsets(request):
     logsets = RAPID7_SERVICE.list_all_logsets()
-    print("<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>")
-    print(logsets)
     return render(request, 'list_all_logsets.html', {'logsets': logsets})
 
 def simple_log_query(request):
@@ -27,17 +25,12 @@ def simple_log_query(request):
         leql = request.POST.get('leql', leql)
 
         logset_id_response = RAPID7_SERVICE.get_log_set_by_name(log_set_name)
-        print("====================logset_id from ===================")
-        print(log_set_name, logset_id_response)
 
         if "id" in logset_id_response:
             query_url = RAPID7_SERVICE.create_query_url(logset_id_response["id"], time_range, leql)
-            print(query_url)
-            print("<<<<<<<<<<run_query() method >>>>>>>>>>>>>>>")
+
             response = RAPID7_SERVICE.run_query(query_url)
         else:
             response = {"error": logset_id_response["error"]}
-
-        print(response)
 
     return render(request, 'simple_log_query.html', {"urlquery": response})

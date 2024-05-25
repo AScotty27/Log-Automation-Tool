@@ -6,7 +6,6 @@ from urllib3.util.retry import Retry
 from decouple import config
 from urllib3 import PoolManager
 
-    
 class Rapid7Service:
     
     BASE_URL = "https://us.api.insight.rapid7.com"  # Base URL for the Rapid7 API
@@ -26,13 +25,17 @@ class Rapid7Service:
             f"https://{self.data_storage_region}.rest.logs.insight.rapid7.com/management/logsets",
             headers={'x-api-key': self.api_key}
         )
-        
+
         if response.status_code == 200:
             logsets_data = response.json()
             logset_dict = {}
+
             if "logsets" in logsets_data and len(logsets_data["logsets"]) > 0:
                 for logset in logsets_data["logsets"]:
-                    logset_dict[logset["name"]] = logset["id"]
+                    for log in logset["logs_info"]:
+                        log_name = log["name"]
+                        log_id = log["id"]
+                        logset_dict[log_name] = log_id
                 return logset_dict
             else:
                 return {"error": "No log sets found."}
@@ -45,23 +48,6 @@ class Rapid7Service:
         http = PoolManager()
         response = http.request(method, url, headers=headers, body=body)
         return response
-
-    def get_logset_by_name(self, log_set):
-        # Fetches log IDs based on predefined log names, enter the log name and get the log
-        url = f"{self.BASE_URL}/management/logs/"
-        headers = {"x-api-key": self.api_key}
-        response = self.http_request("GET", url, headers=headers)
-        
-        # Debugging information
-        print(f"Response Status: {response.status}")
-        print(f"Response Data: {response.data}")
-
-        if response.status == 200:
-            json_object = json.loads(response.data)
-            for log in json_object['logs']:
-                if log['name'] == log_set:
-                    return log['id']
-        return None
 
     def run_query(self, url):
         # Executes a LEQL query and handles pagination if necessary
@@ -77,15 +63,20 @@ class Rapid7Service:
         else:
             return {"error": f"Error: {response.status}, {response.data}"}
 
-    def search_logs(self, log_set, time_range, leql):
-        # Searches logs using the specified parameters
-        log_id = self.get_logset_by_name(log_set)
-        if log_id:
-            query_url = f"{self.BASE_URL}/query/logs/{log_id}?time_range={time_range}&query={leql}"
-            return self.run_query(query_url)
-        else:
-            return {"error": "Log ID not found"}
-    
     def create_query_url(self, logset_id, time_range, leql):
-        query_url = f"{self.BASE_URL}/query/logs/{logset_id}?time_range={time_range}&query={leql}"
+        # Creates the query URL for the logs
+        query_url = f"{self.BASE_URL}/log_search/query/logs/{logset_id}?time_range={time_range}&query={leql}"
         return query_url
+
+    def get_log_set_by_name(self, log_set_name):
+        # Get log set ID by name
+        logsets = self.list_all_logsets()
+        print("=========get_log_set_by_name()============")
+        print(logsets)
+        if "error" in logsets:
+            return {"error": logsets["error"]}
+        
+        if log_set_name in logsets:
+            return {"id": logsets[log_set_name]}
+        else:
+            return {"error": "ID cannot be found"}

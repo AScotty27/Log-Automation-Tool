@@ -1,7 +1,7 @@
 {% extends "main_menu.html" %}
 
 {% block content %}
-<h1>Search Logs</h1>
+<h1>Simple Log Query</h1>
 <form method="post">
     {% csrf_token %}
     <label for="log_set">Log Set:</label>
@@ -16,10 +16,12 @@
     <button type="submit">Search</button>
 </form>
 
-{% if logs_result %}
-    <h2>Search Results:</h2>
-    <pre>{{ logs_result|safe }}</pre>
-{% elif error %}
-    <p>{{ error }}</p>
+{% if urlquery %}
+    {% if urlquery.error %}
+        <p>{{ urlquery.error }}</p>
+    {% else %}
+        <h2>Search Results:</h2>
+        <pre>{{ urlquery|safe }}</pre>
+    {% endif %}
 {% endif %}
 {% endblock %}

@@ -59,6 +59,7 @@ def search_logs(request):
         log_id = get_logs(log_set)
         if log_id:
             query_url = f"{BASE_URL}/query/logs/{log_id}?time_range={time_range}&query={leql}"
+            print(query_url)
             logs_result = run_query(query_url)
         else:
             error = "Log ID not found"

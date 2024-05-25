@@ -10,29 +10,34 @@ def query_app(request):
 
 def list_all_logsets(request):
     logsets = RAPID7_SERVICE.list_all_logsets()
+    print("<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>")
+    print(logsets)
     return render(request, 'list_all_logsets.html', {'logsets': logsets})
 
 def simple_log_query(request):
-    query_url = None  # Initialize query_url to None
+    response = None  # Initialize response to None
 
-    log_set = 'Auth0-officeally-production'  # Default value
+    log_set_name = 'Auth0-officeally-production'  # Default value
     time_range = 'last 1 day'  # Default value
     leql = 'calculate(count)'  # Default value
 
     if request.method == 'POST':  # Form gets submitted
-        log_set = request.POST.get('log_set', log_set)
+        log_set_name = request.POST.get('log_set', log_set_name)
         time_range = request.POST.get('time_range', time_range)
         leql = request.POST.get('leql', leql)
 
-        logset_id = RAPID7_SERVICE.get_logset_by_name(log_set)
+        logset_id_response = RAPID7_SERVICE.get_log_set_by_name(log_set_name)
         print("====================logset_id from ===================")
-        print(log_set, logset_id)
+        print(log_set_name, logset_id_response)
 
-        if logset_id:
-            query_url = RAPID7_SERVICE.create_query_url(logset_id, time_range, leql)
+        if "id" in logset_id_response:
+            query_url = RAPID7_SERVICE.create_query_url(logset_id_response["id"], time_range, leql)
+            print(query_url)
+            print("<<<<<<<<<<run_query() method >>>>>>>>>>>>>>>")
+            response = RAPID7_SERVICE.run_query(query_url)
         else:
-            query_url = "Log ID not found"
+            response = {"error": logset_id_response["error"]}
 
-        print(query_url)
+        print(response)
 
-    return render(request, 'simple_log_query.html', {"urlquery": query_url})
+    return render(request, 'simple_log_query.html', {"urlquery": response})

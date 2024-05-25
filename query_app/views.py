@@ -6,7 +6,7 @@ def list_all_logsets(request):
     logsets = rapid7_service.list_all_logsets()
     return render(request, 'list_all_logsets.html', {'logsets': logsets})
 
-def search_logs(request):
+def search_logs_1(request):
     logs_result = None
     error = None
 
@@ -25,7 +25,7 @@ def search_logs(request):
         if 'error' in logs_result:
             error = logs_result['error']
 
-    return render(request, 'search_logs.html', {
+    return render(request, 'search_logs_1.html', {
         'logs_result': logs_result,
         'error': error,
         'log_set': log_set,

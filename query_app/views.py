@@ -1,38 +1,38 @@
+# query_app/views.py
 from django.shortcuts import render
 from services.rapid7_service import Rapid7Service
 
-def list_all_logsets(request):
-    rapid7_service = Rapid7Service()
-    logsets = rapid7_service.list_all_logsets()
-    return render(request, 'list_all_logsets.html', {'logsets': logsets})
-
-def search_logs_1(request):
-    logs_result = None
-    error = None
-
-    log_set = 'Auth0-officeally-production'
-    time_range = 'last 1 day'
-    leql = 'calculate(count)'
-
-    if request.method == 'POST':
-        log_set = request.POST.get('log_set', log_set)
-        time_range = request.POST.get('time_range', time_range)
-        leql = request.POST.get('leql', leql)
-
-        rapid7_service = Rapid7Service()
-        logs_result = rapid7_service.search_logs(log_set, time_range, leql)
-
-        if 'error' in logs_result:
-            error = logs_result['error']
-
-    return render(request, 'search_logs_1.html', {
-        'logs_result': logs_result,
-        'error': error,
-        'log_set': log_set,
-        'time_range': time_range,
-        'leql': leql
-    })
+RAPID7_SERVICE = Rapid7Service()
 
 def query_app(request):
     information = {"name": "Query Home Page"}
     return render(request, "query_app.html", information)
+
+def list_all_logsets(request):
+    logsets = RAPID7_SERVICE.list_all_logsets()
+    return render(request, 'list_all_logsets.html', {'logsets': logsets})
+
+def simple_log_query(request):
+    query_url = None  # Initialize query_url to None
+
+    log_set = 'Auth0-officeally-production'  # Default value
+    time_range = 'last 1 day'  # Default value
+    leql = 'calculate(count)'  # Default value
+
+    if request.method == 'POST':  # Form gets submitted
+        log_set = request.POST.get('log_set', log_set)
+        time_range = request.POST.get('time_range', time_range)
+        leql = request.POST.get('leql', leql)
+
+        logset_id = RAPID7_SERVICE.get_logset_by_name(log_set)
+        print("====================logset_id from ===================")
+        print(log_set, logset_id)
+
+        if logset_id:
+            query_url = RAPID7_SERVICE.create_query_url(logset_id, time_range, leql)
+        else:
+            query_url = "Log ID not found"
+
+        print(query_url)
+
+    return render(request, 'simple_log_query.html', {"urlquery": query_url})

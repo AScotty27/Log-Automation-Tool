@@ -1,33 +1,17 @@
+
+
+
 {% extends "main_menu.html" %}
 
 {% block content %}
-<h1>Logs of All Log Sets</h1>
+<h1>All Log Sets</h1>
 {% if logsets.error %}
     <p>{{ logsets.error }}</p>
 {% else %}
-    {% if logsets.logsets %}
-        {% for logset in logsets.logsets %}
-            <div class="logset">
-                <p><strong>Log Set Name:</strong> {{ logset.name }}</p>
-                <p><strong>ID:</strong> {{ logset.id }}</p>
-                <ul>
-                    {% for key, value in logset.user_data.items %}
-                        <li><strong>{{ key }}:</strong> {{ value }}</li>
-                    {% endfor %}
-                </ul>
-                <p><strong>Logs Info:</strong></p>
-                <ul>
-                    {% for log in logset.logs_info %}
-                        <li>
-                            <p><strong>Log Name:</strong> {{ log.name }}</p>
-                            <p><strong>Log ID:</strong> {{ log.id }}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No log sets available.</p>
-    {% endif %}
+    <ul>
+    {% for logset_name, logset_id in logsets.items %}
+        <li>{{ logset_name }}: {{ logset_id }}</li>
+    {% endfor %}
+    </ul>
 {% endif %}
 {% endblock %}

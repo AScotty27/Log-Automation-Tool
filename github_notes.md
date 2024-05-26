@@ -1,6 +1,11 @@
 # Github Notes
 https://github.com/AScotty27/Speedy7.git
 
+git log --reverse --pretty=oneline
+git reset --hard d9157ba55563535f0192fc9975ea4bff16d0dbd2
+
+
+
 ### Steps to Contribute to a Git Repository
 
 1. **Fork the Repository**

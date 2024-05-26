@@ -1,0 +1,15 @@
+{% extends "main_menu.html" %}
+
+{% block content %}
+<h1>Create New Variable</h1>
+<form method="POST" action="/app/new_variable/">
+    {% csrf_token %}
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="description">Description:</label><br>
+    <input type="text" id="description" name="description"><br><br>
+    <label for="value">Value:</label><br>
+    <input type="text" id="value" name="value"><br><br>
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

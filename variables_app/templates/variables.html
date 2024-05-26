@@ -1,0 +1,21 @@
+{% extends "main_menu.html" %}
+
+{% block content %}
+<h1>Rapid7 Variables</h1>
+{% for variable in variables.variables %}
+    <div class="variable-section">
+        <h2>{{ variable.name }}</h2>
+        <p><strong>Description:</strong> {{ variable.description }}</p>
+        <p><strong>Value:</strong> {{ variable.value }}</p>
+        <p><strong>Created:</strong> {{ variable.created }}</p>
+        <p><strong>Updated:</strong> {{ variable.updated }}</p>
+        <p><strong>ID:</strong> {{ variable.id }}</p>
+        <!-- Delete form -->
+        <form action="/app/delete_variable/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="variable_id" value="{{ variable.id }}">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+{% endfor %}
+{% endblock %}

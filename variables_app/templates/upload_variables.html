@@ -1,0 +1,13 @@
+{% extends "main_menu.html" %}
+
+{% block content %}
+<h1>Upload Excel File to Create Variables</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Enter variable name">
+    <input type="text" name="description" placeholder="Enter variable description">
+    <input type="file" name="excel_file" required>
+    <button type="submit">Upload and Create Variables</button>
+</form>
+<a href="/app/variables">Back to Variables List</a>
+{% endblock %}

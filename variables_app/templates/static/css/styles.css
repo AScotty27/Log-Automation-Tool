@@ -1,0 +1,23 @@
+/* Main menu styling from your existing setup with enhancements */
+.main-menu {
+    text-align: center; /* Keeps the menu centered */
+    padding: 20px; /* Ensures there's padding around the menu items */
+    background-color: #f9f9f9; /* Light grey background for the menu */
+    border-bottom: 2px solid #ddd; /* Adds a subtle border at the bottom */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Adds a slight shadow for depth */
+}
+
+.main-menu a {
+    color: #0275d8; /* Blue color for the text links */
+    padding: 10px 20px; /* Increases padding for better spacing */
+    text-decoration: none; /* Removes underline from links */
+    font-size: 18px; /* Increases font size for better readability */
+    margin: 0 10px; /* Adds horizontal spacing between menu items */
+    display: inline-block; /* Ensures links are aligned in a row */
+    transition: color 0.3s, background-color 0.3s; /* Smooth transition for hover effects */
+}
+
+.main-menu a:hover, .main-menu a:focus {
+    color: #fff; /* Changes text color to white on hover/focus */
+    background-color: #01447e; /* Changes background to a darker blue on hover/focus */
+}

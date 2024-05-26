@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Main Menu{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .main-menu {
+            text-align: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-bottom: 2px solid #ddd;
+        }
+        .main-menu a {
+            color: #0275d8;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        .main-menu a:hover, .main-menu a:focus {
+            color: #01447e;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-menu">
+        <a href="/variables_app/">Go to Variables</a>
+        <a href= "query_app/">Go to Query (ALT)</a>
+    </div>
+    <div>{% block content %}{% endblock %}</div>
+</body>
+</html>
